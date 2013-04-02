@@ -3,7 +3,9 @@
  * http://github.com/emaniacs/jscache
  * 
  * Copyright 2012, Novi Ardi
+ * @e_maniacs <noone.nu1@gmail.com>
  * Released under BSD and GPL Licenses.
+ * 
  * 
  * Thu Sep 27 12:21:15 WIT 2012
  */
@@ -62,7 +64,7 @@
             config.prefix = conf;
         }
         else {
-            throw new Error('Please specify your config!');
+            // use default config.
         }
         
         if (objectCache.hasOwnProperty(config.prefix)) {
@@ -74,7 +76,7 @@
             ret.expired = config.expired;
             objectCache[config.prefix] = ret;
         }
-        
+
         return ret;
     };
     
