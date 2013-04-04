@@ -41,7 +41,7 @@ Example
 ```
 <script type="text/javascript" src="jscache.js">
     // initialize object with expired time 10 minutes
-    var cache = jscache({time:10});
+    var cache = jscache({expired:10});
 
     // set data with key using default expired time.
     cache.set('key', 'value');
