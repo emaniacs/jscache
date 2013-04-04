@@ -2,11 +2,21 @@ jsCache
 =======
 
 Simple javascript cache data on client browser.
-Storage system using HTML5 localStorage and <s>cookies</s>
+Storage system using HTML5 localStorage as default.
+
+
+Default configuration
+------------------------------
+`jscache.prefix = 'jscache';`
+
+`jscache.expired = 10080; // in minutes`
+
+`jscache.storage = window.localStorage // other options use window.sessionStorage`
 
 
 Method
 ------
+
 `jscache(conf)`
 
 Init jscache with conf
@@ -57,9 +67,10 @@ Example
 Another method to use jscache
 ```
 <script type="text/javascript" src="jscache.js">
-    // set default prefix, and expired.
+    // set default prefix, and expired and use window.sessionStorage as storage.
     jscache.prefix = 'default-prefix-for-jscache';
     jscache.expired = 60; 
+    jscache.storage = window.sessionStorage
     
     // get value based on default prefix.
     var value = jscache().get('key');
@@ -72,3 +83,4 @@ Another method to use jscache
     jscache().flush();
 </script>
 ```
+
