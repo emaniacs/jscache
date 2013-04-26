@@ -1,4 +1,4 @@
-jsCache
+jscache
 =======
 
 Simple javascript cache data on client browser.
@@ -17,33 +17,49 @@ Default configuration
 Method
 ------
 
-`jscache(conf)`
+- **jscache(conf)**
 
-Init jscache with conf
+    Init jscache with conf
 
-`jscache(conf).get(key)`
-
-get value based on key.
+    _Return:_ cache object
 
 
-`jscache(conf).set(key, value, [time])`
 
-set value onto data storage with specific key using expired time, if expired time is empty, default expired time (1 week) will be used.
+- **jscache(conf).get(key)**
 
+    get value based on key.
 
-`jscache(conf).del(key)`
-
-Delete data on storage with specific key was offered.
+    _Return:_ value based on key or null. (jscache.storage.getItem)
 
 
-`jscache(conf).flush()`
 
-Remove all data on storage <s>based on prefix key</s>.
+- **jscache(conf).set(key, value, [time])**
+
+    set value onto data storage with specific key using expired time, if expired time is empty, default expired time (1 week) will be used.
+
+    _Return:_ true on success or false otherwise.
 
 
-`jscache(conf).lastError`
 
-Return last error message.
+- **jscache(conf).del(key)**
+
+    Delete data on storage with specific key was offered.
+
+    _Return:_ jscache.storage.removeItem
+
+
+
+- **jscache(conf).flush()**
+
+    Remove all data on storage <s>based on prefix key</s>.
+
+    _Return:_ total item was deleted.
+
+
+
+- **jscache.lastError**
+    
+    _Return:_ last error message.
 
 
 Example
