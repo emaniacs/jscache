@@ -17,7 +17,7 @@
             var J = jscache('qunit');
             J.flush();
 
-            test('Test one', function() {
+            test('Test type', function() {
                 var obj = {satu:'one'};
                 J.set('integer', 1);
                 J.set('string', 'string');
@@ -32,24 +32,27 @@
                 deepEqual (obj, J.get('obj'), 'Object test');
             });
 
-            test('Test two (timeout)', function() {
+            test('Delete item', function() {
+                var item = 'item';
+                J.set('item', item);
+                equal('item', J.get('item'), 'Get item');
+                J.del('item');
+                equal(undefined, J.get('item'), 'Get after delete == undefined');
+            });
+
+            test('Flush item', function() {
+                var j = jscache('qunit-flush');
+                j.set('satu', 'one');
+                j.set('dua', 'two');
+
+                equal(2, j.flush(), 'Flush 2 item');
+                
+            });
+
+            test('Test timeout', function() {
                 expect(6);
                 J.set('timeout', 'timeout');
                 stop();
-                setTimeout(function(){
-                    var actual = J.get('timeout');
-                    ok(actual, 'get data in 999');
-                    equal(actual, 'timeout');
-                    start();
-                }, 999.999);
-                
-                setTimeout(function(){
-                    var actual = J.get('timeout');
-                    ok(actual, 'get data in 500');
-                    equal(actual, 'timeout');
-                    start();
-                    stop();
-                }, 500);
 
                 setTimeout(function(){
                     var actual = J.get('timeout');
@@ -58,7 +61,21 @@
                     start();
                     stop();
                 }, 100);
-
+                
+                setTimeout(function(){
+                    var actual = J.get('timeout');
+                    ok(actual, 'get data in 500');
+                    equal(actual, 'timeout');
+                    start();
+                    stop();
+                }, 500);
+                
+                setTimeout(function(){
+                    var actual = J.get('timeout');
+                    ok(actual, 'get data in 999');
+                    equal(actual, 'timeout');
+                    start();
+                }, 999);
             })
         </script>
     </body>
