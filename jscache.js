@@ -8,6 +8,7 @@
  * 
  * 
  * Thu Sep 27 12:21:15 WIT 2012
+ * @TODO: expired time in human-readable (s for second, m for minutes, h for hour).
  */
 
 (function (window, undefined){
@@ -28,15 +29,15 @@
     // set method.
     obj.p.set = function(key, value, expTime) {
         
+        // get epoch time
+        var setTime = Date.now();
+        
         // generate key.
         var k = parser.generateKey(this.prefix, key);
         
         // if expTime not a number will using default expired.
         // in minutes.
         var expiration = isNaN(Number(expTime)) ? this.expired : Number(expTime);
-        
-        // get epoch time
-        var setTime = Date.now();
         
         // value is json string.
         var v = parser.createJSON(value, setTime, expiration);
@@ -47,6 +48,9 @@
     // get method.
     obj.p.get = function(key) {
         
+        // get unix time.
+        var now = Date.now();
+        
         // generate key.
         key = parser.generateKey(this.prefix, key);
         
@@ -56,9 +60,6 @@
         // if empty val return null.
         if (! val)
             return null;
-        
-        // get unix time.
-        var now = Date.now();
         
         // parsing value from json string to object.
         var data = parser.parseData(val, now);
