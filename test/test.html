@@ -1,0 +1,65 @@
+<html>
+    <head>
+        <script type="text/javascript" src="jscache.js"></script>
+        <script type="text/javascript" src="qunit/qunit.js"></script>
+        <link rel="stylesheet" href="qunit/qunit.css">
+    </head>
+
+    <body>
+        <div id="qunit"></div>
+        <div id="qunit-fixture"></div>
+
+
+        <script type="text/javascript">
+            jscache.storage = sessionStorage;
+            jscache.expired = 1; // 1 minutes.
+
+            var J = jscache('qunit');
+            J.flush();
+
+            test('Test one', function() {
+                var obj = {satu:'one'};
+                J.set('integer', 1);
+                J.set('string', 'string');
+                J.set('undefined', undefined);
+                J.set('obj', obj)
+                J.set('true', true)
+
+                equal (true, J.get('true'), 'True test');
+                equal ('string', J.get('string'), 'String test');
+                equal (1, J.get('integer'), 'Integer test');
+                equal (undefined, J.get('undefined'), 'Undefined test');
+                deepEqual (obj, J.get('obj'), 'Object test');
+            });
+
+            test('Test two (timeout)', function() {
+                expect(6);
+                J.set('timeout', 'timeout');
+                stop();
+                setTimeout(function(){
+                    var actual = J.get('timeout');
+                    ok(actual, 'get data in 999');
+                    equal(actual, 'timeout');
+                    start();
+                }, 999.999);
+                
+                setTimeout(function(){
+                    var actual = J.get('timeout');
+                    ok(actual, 'get data in 500');
+                    equal(actual, 'timeout');
+                    start();
+                    stop();
+                }, 500);
+
+                setTimeout(function(){
+                    var actual = J.get('timeout');
+                    ok(actual, 'get data in 100');
+                    equal(actual, 'timeout');
+                    start();
+                    stop();
+                }, 100);
+
+            })
+        </script>
+    </body>
+</html>
