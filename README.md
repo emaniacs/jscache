@@ -65,7 +65,8 @@ Method
 Example
 -------
 ```
-<script type="text/javascript" src="jscache.js">
+<script type="text/javascript" src="jscache.js"><script>
+<script type="text/javascript">
     // initialize object with expired time 10 minutes
     var cache = jscache({expired:10});
 
@@ -82,7 +83,8 @@ Example
 
 Another method to use jscache
 ```
-<script type="text/javascript" src="jscache.js">
+<script type="text/javascript" src="jscache.js"></script>
+<script type="text/javascript">
     // set default prefix, and expired and use window.sessionStorage as storage.
     jscache.prefix = 'default-prefix-for-jscache';
     jscache.expired = 60; 
@@ -99,4 +101,3 @@ Another method to use jscache
     jscache().flush();
 </script>
 ```
-
