@@ -12,9 +12,31 @@
  */
 
 (function (window, undefined){
-    // check localStorage.
-    if (typeof(window.localStorage) == 'undefined')
-        throw new Error('jscache: Your browser not support localStorage.');
+    var defaultStorage = {};
+    
+    // check storage.
+    if (window.localStorage) {
+        defaultStorage = window.localStorage;
+    }
+    else if(window.sessionStorage) {
+        defaultStorage = window.sessionStorage;
+    }
+    else {
+        var myStorage = function() {
+            this.getItem = function(key){
+                return this[key] || undefined;
+            };
+            
+            this.setItem = function(key,val){
+                this[key] = val;
+            };
+            
+            this.removeItem = function(key){
+                delete this[key];
+            }
+        };
+        defaultStorage = new myStorage();
+    };
     
     var jscache = function (conf) {
         return new init(conf);
@@ -229,8 +251,11 @@
     // default expired 60 minutes.
     jscache.expired = 60;
     
+    // cache default storage object
+    jscache.defaultStorage = defaultStorage;
+    
     // default storage.
-    jscache.storage = window.localStorage;
+    jscache.storage = jscache.defaultStorage;
     
     // expose jscache to global.
     window.jscache = jscache;
