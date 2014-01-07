@@ -101,3 +101,38 @@ Another method to use jscache
     jscache().flush();
 </script>
 ```
+
+Using another storage
+```
+<script type="text/javascript" src="jscache.js"></script>
+<script type="text/javascript">
+    function myStorage() {
+        this.getItem = function(key){
+            return this[key] || undefined;
+        };
+        
+        this.setItem = function(key,val){
+            this[key] = val;
+        };
+        
+        this.removeItem = function(key){
+            delete this[key];
+        }
+    };
+    
+    // set default prefix, and expired and use window.sessionStorage as storage.
+    jscache.prefix = 'default-prefix-for-jscache';
+    jscache.expired = 60; 
+    jscache.storage = new myStorage();
+    
+    // get value based on default prefix.
+    var value = jscache().get('key');
+    var value1 = jscache().get('key1');
+    
+    // get value with spesific prefix
+    var otherValue = jscache('new-prefix').get('key')
+    
+    // flush cache with default prefix
+    jscache().flush();
+</script>
+```
