@@ -15,6 +15,8 @@ Default configuration
 
 Changelog
 ---------
+* v0.3
+    - BUG: Expired time will force to scale down if using a float number.
 * v0.2  01 Jan 2014
     - expired time now is human readable.
     - delete item in cache now always return undefined.
