@@ -9,7 +9,7 @@ Default configuration
 ------------------------------
 `jscache.prefix = 'jscache';`
 
-`jscache.expired = 10080; // in minutes`
+`jscache.expired = 3600; // in seconds`
 
 `jscache.storage = window.localStorage // other options use window.sessionStorage`
 
@@ -35,7 +35,7 @@ Method
 
 - **jscache(conf).set(key, value, [time])**
 
-    set value onto data storage with specific key using expired time, if expired time is empty, default expired time (1 week) will be used.
+    set value onto data storage with specific key using expired time, if expired time is empty, default expired time will be used.
 
     _Return:_ true on success or false otherwise.
 
@@ -45,7 +45,7 @@ Method
 
     Delete data on storage with specific key was offered.
 
-    _Return:_ jscache.storage.removeItem
+    _Return:_ undefined
 
 
 
@@ -68,13 +68,13 @@ Example
 <script type="text/javascript" src="jscache.js"><script>
 <script type="text/javascript">
     // initialize object with expired time 10 minutes
-    var cache = jscache({expired:10});
+    var cache = jscache({expired:'10m'});
 
     // set data with key using default expired time.
     cache.set('key', 'value');
 
     // set data with expired time (one day).
-    cache.set('new', 'new value', 60*24);
+    cache.set('new', 'new value', '24h');
 
     // show data
     console.log(cache.get('new'));
@@ -87,7 +87,7 @@ Another method to use jscache
 <script type="text/javascript">
     // set default prefix, and expired and use window.sessionStorage as storage.
     jscache.prefix = 'default-prefix-for-jscache';
-    jscache.expired = 60; 
+    jscache.expired = '1m'; 
     jscache.storage = window.sessionStorage
     
     // get value based on default prefix.
@@ -122,7 +122,6 @@ Using another storage
     
     // set default prefix, and expired and use window.sessionStorage as storage.
     jscache.prefix = 'default-prefix-for-jscache';
-    jscache.expired = 60; 
     jscache.storage = new myStorage();
     
     // get value based on default prefix.
