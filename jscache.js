@@ -52,17 +52,17 @@
     obj.p.set = function(key, value, expTime) {
         
         // get epoch time
-        var setTime = Date.now();
+        var setTime = Date.now()
         
-        // generate key.
-        var k = parser.generateKey(this.prefix, key);
+            // generate key.
+            , k = parser.generateKey(this.prefix, key)
         
-        // if expTime not a number will using default expired.
-        // in second.
-        var expiration = parser.getTime(expTime, this.expired);
+            // if expTime not a number will using default expired.
+            // in second.
+            , expiration = parser.getTime(expTime, this.expired)
         
-        // value is json string.
-        var v = parser.createJSON(value, setTime, expiration);
+            // value is json string.
+            , v = parser.createJSON(value, setTime, expiration);
         
         return cache.set (k, v);
     };
@@ -71,13 +71,13 @@
     obj.p.get = function(key) {
         
         // get unix time.
-        var now = Date.now();
+        var now = Date.now()
         
-        // generate key.
-        key = parser.generateKey(this.prefix, key);
+            // generate key.
+            , key = parser.generateKey(this.prefix, key)
         
-        // retrieve value.
-        var val = cache.get(key);
+            // retrieve value.
+            , val = cache.get(key);
 
         // if empty val return null.
         if (! val)
@@ -89,7 +89,7 @@
         // e for expired indicator.
         // d for data.
         // using 1 character to decrease size of object
-        // if data is expired, deleting and return.
+        // if data is expired, delete and return.
         return data.e ? cache.del(key) : data.d;
     };
     
@@ -165,6 +165,7 @@
         createJSON: function(val, setTime, expTime){
             // if expTime not an integer 0
             // convert expTime, from minutes to milliseconds.
+            // the data never be expired if expTime is 0 (storage default).
             var expiredTime = (0===expTime) ? 0 : expTime * 1000;
 
             return JSON.stringify({
@@ -177,11 +178,14 @@
         // parsing data.
         parseData: function(val, now) {
             // create object from json string.
-            var tmp = JSON.parse(val);
+            var tmp = JSON.parse(val)
+                
+                // is expired?
+                , isExpired = now > (tmp.s + tmp.e)
             
-            // set expired indicator.
-            // now greater than setTime + expiredTime
-            var expired = (0===tmp.e) ? false : now > (tmp.s + tmp.e);
+                // set expired indicator.
+                // now greater than setTime + expiredTime
+                , expired = (0===tmp.e) ? false : isExpired;
             
             return {
                 d: tmp.d,
@@ -190,15 +194,18 @@
         },
     
         getTime: function(time, defTime) {
+            // set expired time
             var expTime = time || defTime;
+            
             if (isNaN(Number(expTime))) {
                 var result = /^([\d]+)([smh])$/.exec(expTime) ;
                 
                 if (result) {
-                    var num = result[1],
-                        flag = result[2] == 's' ? 1 :
-                                    result[2] == 'm' ? 60 : 3600,
-                        expTime = parseInt(num) * flag;
+                    var num = result[1]
+                        , flag = result[2] == 's' ? 1 :
+                                    result[2] == 'm' ? 60 : 3600
+                            ;
+                    expTime = parseInt(num) * flag;
                 }
                 else {
                     throw new Error('Invalid time format.');
@@ -245,11 +252,11 @@
         // flushing cache.
         flush: function(prefix){
             // total value will be delete.
-            var total = 0;
+            var total = 0
             
-            // create regex to based on parser.generateKey.
-            var r = new RegExp('^' + prefix + ':.+$');
-            
+                // create regex to based on parser.generateKey.
+                , r = new RegExp('^' + prefix + ':.+$');
+                
             // check all value on storage
             // deleting if storage key is equivalent with Regex and increase total.
             Object.keys(jscache.storage)

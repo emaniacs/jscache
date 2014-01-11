@@ -57,11 +57,13 @@
             });
 
             test('Test timeout', function() {
-                var cache = jscache('testtimeout');
+                var cache = jscache({
+                    prefix:'testtimeout',
+                    expired:1});
                 expect(8);
                 stop();
 
-                cache.set('timeout100', 'timeout100', '1s');
+                cache.set('timeout100', 'timeout100');
                 setTimeout(function(){
                     var actual = cache.get('timeout100');
                     
@@ -71,7 +73,7 @@
                     stop();
                 }, 100);
                 
-                cache.set('timeout500', 'timeout500', '1s');
+                cache.set('timeout500', 'timeout500');
                 setTimeout(function(){
                     var actual = cache.get('timeout500');
                     
@@ -81,7 +83,7 @@
                     stop();
                 }, 500);
                 
-                cache.set('timeout990', 'timeout990', 1);
+                cache.set('timeout990', 'timeout990');
                 setTimeout(function(){
                     var actual = cache.get('timeout990');
                     
@@ -91,7 +93,7 @@
                     stop()
                 }, 990);
 
-                cache.set('timeout1005', 'timeout1005', '1s');
+                cache.set('timeout1005', 'timeout1005');
                 setTimeout(function(){
                     var actual = cache.get('timeout1005');
                     

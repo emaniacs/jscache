@@ -13,6 +13,13 @@ Default configuration
 
 `jscache.storage = window.localStorage // other options use window.sessionStorage`
 
+Changelog
+---------
+* v0.2  01 Jan 2014
+    - expired time now is human readable.
+    - delete item in cache now always return undefined.
+    - set storage with an object if localStorage or sessionStorage not supported by browser
+* v0.1
 
 Method
 ------
