@@ -193,18 +193,18 @@
             };
         },
     
-        getTime: function(time, defTime) {
+        getTime: function(time, defaultTime) {
             // set expired time
-            var expTime = time || defTime;
+            var expTime = time || defaultTime;
             
-            if (isNaN(Number(expTime))) {
+            if (isNaN(expTime)) {
                 var result = /^([\d]+)([smh])$/.exec(expTime) ;
-                
+
                 if (result) {
                     var num = result[1]
                         , flag = result[2] == 's' ? 1 :
                                     result[2] == 'm' ? 60 : 3600
-                            ;
+                    ;
                     expTime = parseInt(num) * flag;
                 }
                 else {
@@ -212,8 +212,10 @@
                 }
             }
             else {
-                expTime = Number(expTime);
+                // parseInt will scale down a number.
+                expTime = parseInt(expTime);
             }
+            
             return expTime;
         }
     };
