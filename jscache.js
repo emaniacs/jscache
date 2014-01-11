@@ -9,8 +9,8 @@
  * 
  * Thu Sep 27 12:21:15 WIT 2012
  * @TODO: expired time in human-readable (s for second, m for minutes, h for hour).
+ * @TODO: storage for every object.
  */
-
 (function (window, undefined){
     var defaultStorage = {};
     
@@ -58,8 +58,8 @@
         var k = parser.generateKey(this.prefix, key);
         
         // if expTime not a number will using default expired.
-        // in minutes.
-        var expiration = isNaN(Number(expTime)) ? this.expired : Number(expTime);
+        // in second.
+        var expiration = parser.getTime(expTime, this.expired);
         
         // value is json string.
         var v = parser.createJSON(value, setTime, expiration);
@@ -150,7 +150,7 @@
     // :END init
     
     // :BEGIN parser
-    // lazy way to parsing data :).
+    // parsing data :).
     var parser = {
         
         // generate key, hmmm very*7 simple.
@@ -165,7 +165,7 @@
         createJSON: function(val, setTime, expTime){
             // if expTime not an integer 0
             // convert expTime, from minutes to milliseconds.
-            var expiredTime = (0===expTime) ? 0 : expTime * 60000;
+            var expiredTime = (0===expTime) ? 0 : expTime * 1000;
 
             return JSON.stringify({
                 d: val,
@@ -187,6 +187,27 @@
                 d: tmp.d,
                 e: expired
             };
+        },
+    
+        getTime: function(time, defTime) {
+            var expTime = time || defTime;
+            if (isNaN(Number(expTime))) {
+                var result = /^([\d]+)([smh])$/.exec(expTime) ;
+                
+                if (result) {
+                    var num = result[1],
+                        flag = result[2] == 's' ? 1 :
+                                    result[2] == 'm' ? 60 : 3600,
+                        expTime = parseInt(num) * flag;
+                }
+                else {
+                    throw new Error('Invalid time format.');
+                }
+            }
+            else {
+                expTime = Number(expTime);
+            }
+            return expTime;
         }
     };
     // :END parser
@@ -217,7 +238,8 @@
         
         // deleting value.
         del: function(key){
-            return jscache.storage.removeItem(key);
+            jscache.storage.removeItem(key);
+            return undefined;
         },
         
         // flushing cache.
@@ -249,7 +271,7 @@
     jscache.prefix = 'jscache';
     
     // default expired 60 minutes.
-    jscache.expired = 60;
+    jscache.expired = 3600;
     
     // cache default storage object
     jscache.defaultStorage = defaultStorage;
